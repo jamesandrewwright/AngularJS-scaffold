@@ -3,13 +3,13 @@
 
 /**
  * @ngdoc function
- * @name neighbourhoodWatchApp.controller:MainCtrl
+ * @name neighbourhoodWatchApp.controller:AboutCtrl
  * @description
- * # MainCtrl
+ * # AboutCtrl
  * Controller of the neighbourhoodWatchApp
  */
-angular.module("neighbourhoodWatchApp")
-  .controller("MainCtrl", function ($scope) {
+angular.module("neighbourhoodWatchApp.about")
+  .controller("AboutCtrl", function ($scope) {
     $scope.awesomeThings = [
       "HTML5 Boilerplate",
       "AngularJS",

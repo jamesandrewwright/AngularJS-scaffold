@@ -4,7 +4,7 @@
 describe("Controller: MainCtrl", function () {
 
   // load the controller"s module
-  beforeEach(module("neighbourhoodWatchApp"));
+  beforeEach(module("neighbourhoodWatchApp.main"));
 
   var MainCtrl,
     scope;

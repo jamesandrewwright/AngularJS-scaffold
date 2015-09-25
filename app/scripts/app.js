@@ -15,7 +15,9 @@ angular
     "ngResource",
     "ngRoute",
     "ngSanitize",
-    "ngTouch"
+    "ngTouch",
+    "neighbourhoodWatchApp.main",
+    "neighbourhoodWatchApp.about"
   ])
   .config(appConfig);
 
@@ -23,11 +25,11 @@ angular
   function appConfig($routeProvider) {
     $routeProvider
       .when("/", {
-        templateUrl: "views/main.html",
+        templateUrl: "features/main/main.html",
         controller: "MainCtrl"
       })
       .when("/about", {
-        templateUrl: "views/about.html",
+        templateUrl: "features/about/about.html",
         controller: "AboutCtrl"
       })
       .otherwise({

@@ -39,9 +39,9 @@ module.exports = function (grunt) {
           "<%= yeoman.app %>/**/!(*.spec).js"
         ],
         tasks: [
-          "newer:jshint:src",
-          "newer:jscs",
-          "newer:concat:appJS",
+          "jshint:src",
+          "jscs",
+          "concat:appJS",
           "ngAnnotate"
         ],
         options: {
@@ -50,12 +50,11 @@ module.exports = function (grunt) {
       },
       jsTest: {
         files: [
-          "test/spec/{,*/}*.js",
           "<%= yeoman.app %>/**/*.spec.js"
         ],
         tasks: [
-          "newer:jshint:test",
-          "newer:jscs",
+          "jshint:test",
+          "jscs",
           "karma"
         ]
       },
