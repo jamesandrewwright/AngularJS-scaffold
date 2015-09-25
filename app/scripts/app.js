@@ -17,7 +17,10 @@ angular
     "ngSanitize",
     "ngTouch"
   ])
-  .config(function ($routeProvider) {
+  .config(appConfig);
+
+  /*@ngInject*/
+  function appConfig($routeProvider) {
     $routeProvider
       .when("/", {
         templateUrl: "views/main.html",
@@ -30,5 +33,5 @@ angular
       .otherwise({
         redirectTo: "/"
       });
-  });
+  }
 })();

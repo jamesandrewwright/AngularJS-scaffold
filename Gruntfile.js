@@ -8,7 +8,8 @@
 // "test/spec/**/*.js"
 
 module.exports = function (grunt) {
-  grunt.loadNpmTasks('grunt-protractor-runner');
+  grunt.loadNpmTasks("grunt-protractor-runner");
+  grunt.loadNpmTasks("grunt-ng-annotate");
   // Load grunt tasks automatically
   require("load-grunt-tasks")(grunt);
 
@@ -39,7 +40,9 @@ module.exports = function (grunt) {
         ],
         tasks: [
           "newer:jshint:src",
-          "newer:jscs"
+          "newer:jscs",
+          "newer:concat:appJS",
+          "ngAnnotate"
         ],
         options: {
           livereload: "<%= connect.options.livereload %>"
@@ -53,14 +56,19 @@ module.exports = function (grunt) {
         tasks: [
           "newer:jshint:test",
           "newer:jscs",
-          "karma"]
+          "karma"
+        ]
       },
       compass: {
         files: ["<%= yeoman.app %>/styles/{,*/}*.{scss,sass}"],
         tasks: ["compass:server", "autoprefixer"]
       },
       gruntfile: {
-        files: ["Gruntfile.js"]
+        files: ["Gruntfile.js"],
+        tasks: [
+          "newer:jshint:test",
+          "newer:jscs"
+        ]
       },
       livereload: {
         options: {
@@ -69,6 +77,7 @@ module.exports = function (grunt) {
         files: [
           "<%= yeoman.app %>/{,*/}*.html",
           ".tmp/styles/{,*/}*.css",
+          ".tmp/scripts/{,*/}*.js",
           "<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}"
         ]
       }
@@ -95,6 +104,10 @@ module.exports = function (grunt) {
               connect().use(
                 "/app/styles",
                 connect.static("./app/styles")
+              ),
+              connect().use(
+                "/app/scripts",
+                connect.static("./app/js")
               ),
               connect.static(appConfig.app)
             ];
@@ -170,7 +183,7 @@ module.exports = function (grunt) {
           // Arguments passed to the command
         }
       },
-      all: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
+      all: {   // Grunt requires at least one target to run so you can simply put "all: {}" here too.
         options: {
           configFile: "test/e2e.conf.js", // Target-specific config file
           args: {
@@ -182,14 +195,12 @@ module.exports = function (grunt) {
       }
     },
 
-
     // Empties folders to start fresh
     clean: {
       dist: {
         files: [{
           dot: true,
           src: [
-            ".tmp",
             "<%= yeoman.dist %>/{,*/}*",
             "!<%= yeoman.dist %>/.git{,*/}*"
           ]
@@ -329,27 +340,58 @@ module.exports = function (grunt) {
     // By default, your `index.html`"s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       "<%= yeoman.dist %>/styles/main.css": [
-    //         ".tmp/styles/{,*/}*.css"
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       "<%= yeoman.dist %>/scripts/scripts.js": [
-    //         "<%= yeoman.dist %>/scripts/scripts.js"
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+    cssmin: {
+       dist: {
+         files: {
+           "<%= yeoman.dist %>/styles/main.css": [
+             ".tmp/styles/{,*/}*.css"
+           ]
+         }
+       }
+    },
+    uglify: {
+       dist: {
+         files: {
+           "<%= yeoman.dist %>/scripts/site.js": [
+             ".tmp/scripts/site.js"
+           ],
+           "<%= yeoman.dist %>/scripts/vendor.js": [
+             ".tmp/scripts/vendor.js"
+           ]
+         }
+       }
+    },
+    concat: {
+      appJS: {
+        src: [
+          "app/**/*Module.js",
+          "app/**/*.js",
+          "!app/**/*spec.js"
+        ],
+        dest: ".tmp/scripts/site.js"
+      },
+      vendorJS: {
+        src: [
+          "bower_components/jquery/dist/jquery.js",
+          "bower_components/angular/angular.js",
+          "bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js",
+          "bower_components/angular-animate/angular-animate.js",
+          "bower_components/angular-cookies/angular-cookies.js",
+          "bower_components/angular-resource/angular-resource.js",
+          "bower_components/angular-route/angular-route.js",
+          "bower_components/angular-sanitize/angular-sanitize.js",
+          "bower_components/angular-touch/angular-touch.js"
+        ],
+        dest: ".tmp/scripts/vendor.js"
+      },
+
+      dist: {
+        src: [
+          ".tmp/scripts/site.js"
+        ],
+        dest: ".tmp/concat/scripts/site.js"
+      }
+    },
 
     imagemin: {
       dist: {
@@ -394,13 +436,13 @@ module.exports = function (grunt) {
     // ng-annotate tries to make the code safe for minification automatically
     // by using the Angular long form for dependency injection.
     ngAnnotate: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: ".tmp/concat/scripts",
-          src: "*.js",
-          dest: ".tmp/concat/scripts"
-        }]
+      app: {
+        files: [
+          {
+            expand: true,
+            src: [".tmp/scripts/site.js"]
+          }
+        ]
       }
     },
 
@@ -444,13 +486,21 @@ module.exports = function (grunt) {
         cwd: "<%= yeoman.app %>/styles",
         dest: ".tmp/styles/",
         src: "{,*/}*.css"
+      },
+      scripts: {
+        expand: true,
+        cwd: "<%= yeoman.app %>/scripts",
+        dest: ".tmp/scripts/",
+        src: "{,*/}*.js"
       }
     },
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        "compass:server"
+        "compass:server",
+        "concat:appJS",
+        "concat:vendorJS"
       ],
       test: [
         "compass"
@@ -486,7 +536,7 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask("server", "DEPRECATED TASK. Use the 'serve' task instead", function (target) {
+  grunt.registerTask("server", "DEPRECATED TASK. Use the serve task instead", function (target) {
     grunt.log.warn("The `server` task has been deprecated. Use `grunt serve` to start a server.");
     grunt.task.run(["serve:" + target]);
   });
@@ -506,8 +556,7 @@ module.exports = function (grunt) {
     "useminPrepare",
     "concurrent:dist",
     "autoprefixer",
-    "concat",
-    "ngAnnotate",
+    "concat:dist",
     "copy:dist",
     "cdnify",
     "cssmin",
