@@ -1,6 +1,8 @@
 <!doctype html>
-<html class="no-js" data-ng-app="neighbourhoodWatchApp">
-  <head>
+<html class="no-js" data-ng-app="sampleApp">
+  <head lang="en">
+    <base href="/"/>
+
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
@@ -32,7 +34,7 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/">neighbourhoodWatch</a>
+            <a class="navbar-brand" href="#/">sampleApp</a>
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
@@ -40,7 +42,6 @@
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/">Home</a></li>
               <li><a ng-href="#/about">About</a></li>
-              <li><a ng-href="#/">Contact</a></li>
             </ul>
           </div>
         </div>
@@ -48,7 +49,7 @@
     </div>
 
     <div class="container">
-    <div ng-view=""></div>
+    <div data-ui-view></div>
     </div>
 
     <div class="footer">
@@ -70,7 +71,7 @@
     </script>
 
     <script src="scripts/vendor.js"></script>
-        <script src="scripts/site.js"></script>
+      <script src="scripts/site.js"></script>
 
 </body>
 </html>

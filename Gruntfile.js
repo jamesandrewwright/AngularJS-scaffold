@@ -377,7 +377,7 @@ module.exports = function (grunt) {
           "bower_components/angular-animate/angular-animate.js",
           "bower_components/angular-cookies/angular-cookies.js",
           "bower_components/angular-resource/angular-resource.js",
-          "bower_components/angular-route/angular-route.js",
+          "node_modules/angular-ui-router/build/angular-ui-router.js",
           "bower_components/angular-sanitize/angular-sanitize.js",
           "bower_components/angular-touch/angular-touch.js"
         ],

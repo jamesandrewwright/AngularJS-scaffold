@@ -1,18 +1,18 @@
 (function() {
   "use strict";
 
-describe("Controller: AboutCtrl", function () {
+describe("Controller: aboutCtrl", function () {
 
   // load the controller"s module
-  beforeEach(module("neighbourhoodWatchApp.about"));
+  beforeEach(module("sampleApp.about"));
 
-  var AboutCtrl,
+  var aboutCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    AboutCtrl = $controller("AboutCtrl", {
+    aboutCtrl = $controller("aboutCtrl", {
       $scope: scope
     });
   }));

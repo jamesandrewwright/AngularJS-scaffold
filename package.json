@@ -1,7 +1,9 @@
 {
   "name": "neighbourhoodwatch",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "angular-ui-router": "^0.2.15"
+  },
   "repository": {},
   "devDependencies": {
     "grunt": "^0.4.5",

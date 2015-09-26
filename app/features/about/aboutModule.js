@@ -1,6 +1,6 @@
 (function () {
   "use strict";
 
-  angular.module("neighbourhoodWatchApp.about", [
+  angular.module("sampleApp.about", [
   ]);
 }());
